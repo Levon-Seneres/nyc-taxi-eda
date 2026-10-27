@@ -70,3 +70,25 @@ WHERE
     AND EXTRACT(EPOCH FROM (tpep_dropoff_datetime - tpep_pickup_datetime)) >= 60
     AND EXTRACT(EPOCH FROM (tpep_dropoff_datetime - tpep_pickup_datetime)) <= 21600
 ;
+
+-- INDEXES
+CREATE INDEX idx_clean_pickup    ON trips_clean (tpep_pickup_datetime);
+CREATE INDEX idx_clean_dropoff   ON trips_clean (tpep_dropoff_datetime);
+CREATE INDEX idx_clean_pu_loc    ON trips_clean (PULocationID);
+CREATE INDEX idx_clean_do_loc    ON trips_clean (DOLocationID);
+CREATE INDEX idx_clean_date      ON trips_clean (pickup_date);
+CREATE INDEX idx_clean_hour      ON trips_clean (pickup_hour);
+CREATE INDEX idx_clean_flag      ON trips_clean (suspicious_flag);
+CREATE INDEX idx_clean_payment   ON trips_clean (payment_type);
+
+-- VERIFICATION
+SELECT
+    COUNT(*)                                                     AS total_rows,
+    COUNT(*) FILTER (WHERE suspicious_flag IS NOT NULL)          AS flagged_rows,
+    COUNT(*) FILTER (WHERE suspicious_flag IS     NULL)          AS clean_rows,
+    ROUND(
+        COUNT(*) FILTER (WHERE suspicious_flag IS NOT NULL) * 100.0 / COUNT(*)
+    , 2)                                                         AS pct_flagged,
+    MIN(tpep_pickup_datetime)                                    AS earliest,
+    MAX(tpep_pickup_datetime)                                    AS latest
+FROM trips_clean;
