@@ -43,3 +43,30 @@ SELECT
         , 2)
         ELSE NULL
     END::NUMERIC(8,2)                                           AS avg_speed_mph,
+
+    -- FLAG SUSPICIOUS ROWS
+    CASE
+        WHEN passenger_count IS NULL OR passenger_count = 0   THEN 'null_or_zero_passengers'
+        WHEN trip_distance   > 200                            THEN 'extreme_distance'
+        WHEN fare_amount     > 500                            THEN 'extreme_fare'
+        WHEN EXTRACT(EPOCH FROM (tpep_dropoff_datetime - tpep_pickup_datetime)) / 60.0 > 300
+                                                              THEN 'extreme_duration'
+        WHEN tip_amount < 0                                   THEN 'negative_tip'
+        ELSE NULL
+    END                                                         AS suspicious_flag
+
+FROM trips_raw
+
+-- ── DROP DETERMINILISTICALLY WRONG ROWS
+WHERE
+    tpep_pickup_datetime  >= '2024-01-01'
+    AND tpep_pickup_datetime  <  '2025-01-01'
+    AND tpep_dropoff_datetime >= '2024-01-01'
+    AND tpep_dropoff_datetime <  '2025-01-01'
+    AND tpep_dropoff_datetime > tpep_pickup_datetime
+    AND trip_distance > 0
+    AND fare_amount   > 0
+    AND total_amount  > 0
+    AND EXTRACT(EPOCH FROM (tpep_dropoff_datetime - tpep_pickup_datetime)) >= 60
+    AND EXTRACT(EPOCH FROM (tpep_dropoff_datetime - tpep_pickup_datetime)) <= 21600
+;
