@@ -210,3 +210,45 @@ SELECT
     ROUND(AVG("total_amount")::NUMERIC, 2)           AS avg_total
 FROM trips_with_zones
 WHERE suspicious_flag IS NULL;
+
+-- Rate code analysis
+-- 1=Standard, 2=JFK, 3=Newark, 4=Nassau/Westchester, 5=Negotiated, 6=Group ride
+CREATE TABLE IF NOT EXISTS agg_rate_code AS
+SELECT
+    "RatecodeID",
+    CASE "RatecodeID"
+        WHEN 1 THEN 'Standard Rate'
+        WHEN 2 THEN 'JFK Flat Rate'
+        WHEN 3 THEN 'Newark'
+        WHEN 4 THEN 'Nassau/Westchester'
+        WHEN 5 THEN 'Negotiated Fare'
+        WHEN 6 THEN 'Group Ride'
+    END                                        AS rate_label,
+    COUNT(*)                                   AS total_trips,
+    ROUND(AVG("fare_amount")::NUMERIC, 2)      AS avg_fare,
+    ROUND(AVG("trip_distance")::NUMERIC, 2)    AS avg_distance_mi,
+    ROUND(AVG(trip_duration_min)::NUMERIC, 2)  AS avg_duration_min,
+    ROUND(AVG("total_amount")::NUMERIC, 2)     AS avg_total
+FROM trips_with_zones
+WHERE suspicious_flag IS NULL
+  AND "RatecodeID" BETWEEN 1 AND 6
+GROUP BY "RatecodeID"
+ORDER BY total_trips DESC;
+
+-- Speed analysis by borough
+CREATE TABLE IF NOT EXISTS agg_speed_by_borough AS
+SELECT
+    pu_borough,
+    ROUND(AVG(avg_speed_mph)::NUMERIC, 2)      AS avg_speed_mph,
+    ROUND(PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY avg_speed_mph)::NUMERIC, 2) AS median_speed_mph,
+    ROUND(AVG(trip_duration_min)::NUMERIC, 2)  AS avg_duration_min,
+    ROUND(AVG("trip_distance")::NUMERIC, 2)    AS avg_distance_mi,
+    COUNT(*)                                   AS total_trips
+FROM trips_with_zones
+WHERE suspicious_flag IS NULL
+  AND avg_speed_mph IS NOT NULL
+  AND avg_speed_mph > 0
+  AND avg_speed_mph < 100
+  AND pu_borough IS NOT NULL
+GROUP BY pu_borough
+ORDER BY avg_speed_mph DESC;
