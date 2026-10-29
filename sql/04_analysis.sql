@@ -72,3 +72,53 @@ FROM trips_with_zones
 WHERE suspicious_flag IS NULL
 GROUP BY pickup_hour, day_of_week
 ORDER BY day_of_week, pickup_hour;
+
+
+
+
+-- 2A. Pickup borough demand
+CREATE TABLE IF NOT EXISTS agg_pu_borough_demand AS
+SELECT
+    pu_borough,
+    COUNT(*)                                   AS total_trips,
+    ROUND(AVG("fare_amount")::NUMERIC, 2)      AS avg_fare,
+    ROUND(AVG("total_amount")::NUMERIC, 2)     AS avg_total,
+    ROUND(AVG("trip_distance")::NUMERIC, 2)    AS avg_distance_mi,
+    ROUND(AVG(trip_duration_min)::NUMERIC, 2)  AS avg_duration_min,
+    ROUND(SUM("total_amount")::NUMERIC, 2)     AS total_revenue
+FROM trips_with_zones
+WHERE suspicious_flag IS NULL
+  AND pu_borough IS NOT NULL
+GROUP BY pu_borough
+ORDER BY total_trips DESC;
+
+-- 2B. Dropoff borough demand
+CREATE TABLE IF NOT EXISTS agg_do_borough_demand AS
+SELECT
+    do_borough,
+    COUNT(*)                                   AS total_trips,
+    ROUND(AVG("fare_amount")::NUMERIC, 2)      AS avg_fare,
+    ROUND(AVG("total_amount")::NUMERIC, 2)     AS avg_total,
+    ROUND(SUM("total_amount")::NUMERIC, 2)     AS total_revenue
+FROM trips_with_zones
+WHERE suspicious_flag IS NULL
+  AND do_borough IS NOT NULL
+GROUP BY do_borough
+ORDER BY total_trips DESC;
+
+-- Top 20 pickup zones, most active zones
+CREATE TABLE IF NOT EXISTS agg_top_pu_zones AS
+SELECT
+    pu_borough,
+    pu_zone,
+    COUNT(*)                                   AS total_trips,
+    ROUND(AVG("fare_amount")::NUMERIC, 2)      AS avg_fare,
+    ROUND(AVG("total_amount")::NUMERIC, 2)     AS avg_total,
+    ROUND(AVG("tip_amount")::NUMERIC, 2)       AS avg_tip,
+    ROUND(SUM("total_amount")::NUMERIC, 2)     AS total_revenue
+FROM trips_with_zones
+WHERE suspicious_flag IS NULL
+  AND pu_zone IS NOT NULL
+GROUP BY pu_borough, pu_zone
+ORDER BY total_trips DESC
+LIMIT 20;
