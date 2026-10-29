@@ -36,3 +36,39 @@ FROM trips_with_zones
 WHERE suspicious_flag IS NULL
 GROUP BY day_of_week
 ORDER BY day_of_week;
+
+-- Monthly demand and seasonal trends
+CREATE TABLE IF NOT EXISTS agg_monthly_demand AS
+SELECT
+    pickup_month,
+    TO_CHAR(DATE_TRUNC('month', "tpep_pickup_datetime"), 'Month') AS month_name,
+    COUNT(*)                                   AS total_trips,
+    ROUND(AVG("fare_amount")::NUMERIC, 2)      AS avg_fare,
+    ROUND(AVG("total_amount")::NUMERIC, 2)     AS avg_total,
+    ROUND(AVG("tip_amount")::NUMERIC, 2)       AS avg_tip,
+    ROUND(SUM("total_amount")::NUMERIC, 2)     AS total_revenue
+FROM trips_with_zones
+WHERE suspicious_flag IS NULL
+GROUP BY pickup_month, DATE_TRUNC('month', "tpep_pickup_datetime")
+ORDER BY pickup_month;
+
+-- Hour by day heatmap
+CREATE TABLE IF NOT EXISTS agg_hour_dow_heatmap AS
+SELECT
+    pickup_hour,
+    day_of_week,
+    CASE day_of_week
+        WHEN 0 THEN 'Sunday'
+        WHEN 1 THEN 'Monday'
+        WHEN 2 THEN 'Tuesday'
+        WHEN 3 THEN 'Wednesday'
+        WHEN 4 THEN 'Thursday'
+        WHEN 5 THEN 'Friday'
+        WHEN 6 THEN 'Saturday'
+    END                                        AS day_name,
+    COUNT(*)                                   AS total_trips,
+    ROUND(AVG("fare_amount")::NUMERIC, 2)      AS avg_fare
+FROM trips_with_zones
+WHERE suspicious_flag IS NULL
+GROUP BY pickup_hour, day_of_week
+ORDER BY day_of_week, pickup_hour;
