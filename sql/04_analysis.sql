@@ -153,3 +153,60 @@ WHERE suspicious_flag IS NULL
   AND do_borough IS NOT NULL
 GROUP BY pu_borough, do_borough
 ORDER BY total_trips DESC;
+
+
+-- Payment type
+-- 1=Credit card, 2=Cash, 3=No charge, 4=Dispute, 5=Unknown, 6=Voided
+CREATE TABLE IF NOT EXISTS agg_payment_type AS
+SELECT
+    "payment_type",
+    CASE "payment_type"
+        WHEN 1 THEN 'Credit Card'
+        WHEN 2 THEN 'Cash'
+        WHEN 3 THEN 'No Charge'
+        WHEN 4 THEN 'Dispute'
+        WHEN 5 THEN 'Unknown'
+        WHEN 6 THEN 'Voided Trip'
+    END                                        AS payment_label,
+    COUNT(*)                                   AS total_trips,
+    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS pct_of_trips,
+    ROUND(AVG("fare_amount")::NUMERIC, 2)      AS avg_fare,
+    ROUND(AVG("tip_amount")::NUMERIC, 2)       AS avg_tip,
+    ROUND(AVG("total_amount")::NUMERIC, 2)     AS avg_total,
+    ROUND(SUM("total_amount")::NUMERIC, 2)     AS total_revenue
+FROM trips_with_zones
+WHERE suspicious_flag IS NULL
+GROUP BY "payment_type"
+ORDER BY total_trips DESC;
+
+-- Tip analysis (only credit card trips)
+CREATE TABLE IF NOT EXISTS agg_tip_analysis AS
+SELECT
+    pu_borough,
+    COUNT(*)                                              AS total_cc_trips,
+    ROUND(AVG("tip_amount")::NUMERIC, 2)                 AS avg_tip,
+    ROUND(AVG("tip_amount" / NULLIF("fare_amount", 0) * 100)::NUMERIC, 2) AS avg_tip_pct,
+    ROUND(PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY "tip_amount")::NUMERIC, 2) AS median_tip,
+    COUNT(*) FILTER (WHERE "tip_amount" = 0)             AS zero_tip_trips,
+    ROUND(COUNT(*) FILTER (WHERE "tip_amount" = 0) * 100.0 / COUNT(*), 2) AS pct_zero_tip
+FROM trips_with_zones
+WHERE suspicious_flag IS NULL
+  AND "payment_type" = 1
+  AND pu_borough IS NOT NULL
+GROUP BY pu_borough
+ORDER BY avg_tip_pct DESC;
+
+-- Fare component sources
+CREATE TABLE IF NOT EXISTS agg_fare_components AS
+SELECT
+    ROUND(AVG("fare_amount")::NUMERIC, 2)            AS avg_base_fare,
+    ROUND(AVG("extra")::NUMERIC, 2)                  AS avg_extra,
+    ROUND(AVG("mta_tax")::NUMERIC, 2)                AS avg_mta_tax,
+    ROUND(AVG("tip_amount")::NUMERIC, 2)             AS avg_tip,
+    ROUND(AVG("tolls_amount")::NUMERIC, 2)           AS avg_tolls,
+    ROUND(AVG("improvement_surcharge")::NUMERIC, 2)  AS avg_improvement_surcharge,
+    ROUND(AVG("congestion_surcharge")::NUMERIC, 2)   AS avg_congestion_surcharge,
+    ROUND(AVG("Airport_fee")::NUMERIC, 2)            AS avg_airport_fee,
+    ROUND(AVG("total_amount")::NUMERIC, 2)           AS avg_total
+FROM trips_with_zones
+WHERE suspicious_flag IS NULL;
