@@ -252,3 +252,44 @@ WHERE suspicious_flag IS NULL
   AND pu_borough IS NOT NULL
 GROUP BY pu_borough
 ORDER BY avg_speed_mph DESC;
+
+-- Passenger count distribution
+CREATE TABLE IF NOT EXISTS agg_passenger_dist AS
+SELECT
+    "passenger_count"::INTEGER                 AS passenger_count,
+    COUNT(*)                                   AS total_trips,
+    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS pct_of_trips,
+    ROUND(AVG("fare_amount")::NUMERIC, 2)      AS avg_fare,
+    ROUND(AVG("tip_amount")::NUMERIC, 2)       AS avg_tip
+FROM trips_with_zones
+WHERE suspicious_flag IS NULL
+  AND "passenger_count" BETWEEN 1 AND 6
+GROUP BY "passenger_count"
+ORDER BY passenger_count;
+
+
+-- Zone loacations
+CREATE TABLE IF NOT EXISTS agg_airport_trips AS
+SELECT
+    CASE
+        WHEN "PULocationID" IN (132, 138, 1) OR "DOLocationID" IN (132, 138, 1)
+        THEN 'Airport Trip'
+        ELSE 'Non-Airport Trip'
+    END                                        AS trip_type,
+    CASE
+        WHEN "PULocationID" = 132 OR "DOLocationID" = 132 THEN 'JFK'
+        WHEN "PULocationID" = 138 OR "DOLocationID" = 138 THEN 'LaGuardia'
+        WHEN "PULocationID" = 1   OR "DOLocationID" = 1   THEN 'Newark'
+        ELSE 'Non-Airport'
+    END                                        AS airport,
+    COUNT(*)                                   AS total_trips,
+    ROUND(AVG("fare_amount")::NUMERIC, 2)      AS avg_fare,
+    ROUND(AVG("tip_amount")::NUMERIC, 2)       AS avg_tip,
+    ROUND(AVG("trip_distance")::NUMERIC, 2)    AS avg_distance_mi,
+    ROUND(AVG(trip_duration_min)::NUMERIC, 2)  AS avg_duration_min,
+    ROUND(AVG("total_amount")::NUMERIC, 2)     AS avg_total,
+    ROUND(SUM("total_amount")::NUMERIC, 2)     AS total_revenue
+FROM trips_with_zones
+WHERE suspicious_flag IS NULL
+GROUP BY trip_type, airport
+ORDER BY total_trips DESC;
