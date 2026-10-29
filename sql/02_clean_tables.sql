@@ -24,3 +24,24 @@ SELECT
     "total_amount",
     "congestion_surcharge",
     "Airport_fee",
+    
+    -- TIME FEATURES
+    EXTRACT(HOUR  FROM "tpep_pickup_datetime")::SMALLINT        AS pickup_hour,
+    EXTRACT(DOW   FROM "tpep_pickup_datetime")::SMALLINT        AS day_of_week,
+    EXTRACT(MONTH FROM "tpep_pickup_datetime")::SMALLINT        AS pickup_month,
+    DATE("tpep_pickup_datetime")                                AS pickup_date,
+
+    -- TRIP DURATION
+    ROUND(
+        (EXTRACT(EPOCH FROM ("tpep_dropoff_datetime" - "tpep_pickup_datetime")) / 60.0)::NUMERIC
+    , 2)                                                        AS trip_duration_min,
+
+    -- AVG SPEED
+    CASE
+        WHEN EXTRACT(EPOCH FROM ("tpep_dropoff_datetime" - "tpep_pickup_datetime")) > 0
+        THEN ROUND(
+            ("trip_distance" /
+            (EXTRACT(EPOCH FROM ("tpep_dropoff_datetime" - "tpep_pickup_datetime")) / 3600.0))::NUMERIC
+        , 2)
+        ELSE NULL
+    END                                                         AS avg_speed_mph,
