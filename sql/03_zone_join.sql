@@ -42,3 +42,30 @@ SELECT
     dz."Borough"      AS do_borough,
     dz."Zone"         AS do_zone,
     dz."service_zone" AS do_service_zone
+
+FROM trips_clean tc
+LEFT JOIN taxi_zones pz ON tc."PULocationID" = pz."LocationID"
+LEFT JOIN taxi_zones dz ON tc."DOLocationID" = dz."LocationID"
+;
+
+-- INDEXES
+CREATE INDEX idx_zones_pickup_dt  ON trips_with_zones ("tpep_pickup_datetime");
+CREATE INDEX idx_zones_pu_borough ON trips_with_zones (pu_borough);
+CREATE INDEX idx_zones_do_borough ON trips_with_zones (do_borough);
+CREATE INDEX idx_zones_pu_zone    ON trips_with_zones (pu_zone);
+CREATE INDEX idx_zones_do_zone    ON trips_with_zones (do_zone);
+CREATE INDEX idx_zones_payment    ON trips_with_zones ("payment_type");
+CREATE INDEX idx_zones_flag       ON trips_with_zones (suspicious_flag);
+CREATE INDEX idx_zones_pickup_hr  ON trips_with_zones (pickup_hour);
+CREATE INDEX idx_zones_date       ON trips_with_zones (pickup_date);
+
+-- VERIFICATION
+SELECT
+    COUNT(*)                                             AS total_rows,
+    COUNT(*) FILTER (WHERE pu_borough IS NULL)           AS pu_unmatched,
+    COUNT(*) FILTER (WHERE do_borough IS NULL)           AS do_unmatched,
+    COUNT(DISTINCT pu_borough)                           AS unique_pu_boroughs,
+    COUNT(DISTINCT do_borough)                           AS unique_do_boroughs,
+    COUNT(DISTINCT pu_zone)                              AS unique_pu_zones,
+    COUNT(DISTINCT do_zone)                              AS unique_do_zones
+FROM trips_with_zones;
