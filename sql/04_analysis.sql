@@ -122,3 +122,34 @@ WHERE suspicious_flag IS NULL
 GROUP BY pu_borough, pu_zone
 ORDER BY total_trips DESC
 LIMIT 20;
+
+-- Top 20 dropoff zones, most active destination zones
+CREATE TABLE IF NOT EXISTS agg_top_do_zones AS
+SELECT
+    do_borough,
+    do_zone,
+    COUNT(*)                                   AS total_trips,
+    ROUND(AVG("fare_amount")::NUMERIC, 2)      AS avg_fare,
+    ROUND(AVG("total_amount")::NUMERIC, 2)     AS avg_total,
+    ROUND(SUM("total_amount")::NUMERIC, 2)     AS total_revenue
+FROM trips_with_zones
+WHERE suspicious_flag IS NULL
+  AND do_zone IS NOT NULL
+GROUP BY do_borough, do_zone
+ORDER BY total_trips DESC
+LIMIT 20;
+
+-- Borough to borough
+CREATE TABLE IF NOT EXISTS agg_borough_flow AS
+SELECT
+    pu_borough,
+    do_borough,
+    COUNT(*)                                   AS total_trips,
+    ROUND(AVG("fare_amount")::NUMERIC, 2)      AS avg_fare,
+    ROUND(AVG("trip_distance")::NUMERIC, 2)    AS avg_distance_mi
+FROM trips_with_zones
+WHERE suspicious_flag IS NULL
+  AND pu_borough IS NOT NULL
+  AND do_borough IS NOT NULL
+GROUP BY pu_borough, do_borough
+ORDER BY total_trips DESC;
