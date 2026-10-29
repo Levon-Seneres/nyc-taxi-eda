@@ -293,3 +293,37 @@ FROM trips_with_zones
 WHERE suspicious_flag IS NULL
 GROUP BY trip_type, airport
 ORDER BY total_trips DESC;
+
+-- Flagged rows and flag type
+CREATE TABLE IF NOT EXISTS agg_suspicious_flags AS
+SELECT
+    suspicious_flag,
+    COUNT(*)                                   AS total_rows,
+    ROUND(AVG("fare_amount")::NUMERIC, 2)      AS avg_fare,
+    ROUND(AVG("trip_distance")::NUMERIC, 2)    AS avg_distance_mi,
+    ROUND(AVG(trip_duration_min)::NUMERIC, 2)  AS avg_duration_min
+FROM trips_with_zones
+WHERE suspicious_flag IS NOT NULL
+GROUP BY suspicious_flag
+ORDER BY total_rows DESC;
+
+--VERIFICATION
+
+SELECT 'agg_hourly_demand'    AS table_name, COUNT(*) AS rows FROM agg_hourly_demand    UNION ALL
+SELECT 'agg_dow_demand'       AS table_name, COUNT(*) AS rows FROM agg_dow_demand       UNION ALL
+SELECT 'agg_monthly_demand'   AS table_name, COUNT(*) AS rows FROM agg_monthly_demand   UNION ALL
+SELECT 'agg_hour_dow_heatmap' AS table_name, COUNT(*) AS rows FROM agg_hour_dow_heatmap UNION ALL
+SELECT 'agg_pu_borough_demand'AS table_name, COUNT(*) AS rows FROM agg_pu_borough_demand UNION ALL
+SELECT 'agg_do_borough_demand'AS table_name, COUNT(*) AS rows FROM agg_do_borough_demand UNION ALL
+SELECT 'agg_top_pu_zones'     AS table_name, COUNT(*) AS rows FROM agg_top_pu_zones     UNION ALL
+SELECT 'agg_top_do_zones'     AS table_name, COUNT(*) AS rows FROM agg_top_do_zones     UNION ALL
+SELECT 'agg_borough_flow'     AS table_name, COUNT(*) AS rows FROM agg_borough_flow     UNION ALL
+SELECT 'agg_payment_type'     AS table_name, COUNT(*) AS rows FROM agg_payment_type     UNION ALL
+SELECT 'agg_tip_analysis'     AS table_name, COUNT(*) AS rows FROM agg_tip_analysis     UNION ALL
+SELECT 'agg_fare_components'  AS table_name, COUNT(*) AS rows FROM agg_fare_components  UNION ALL
+SELECT 'agg_rate_code'        AS table_name, COUNT(*) AS rows FROM agg_rate_code        UNION ALL
+SELECT 'agg_speed_by_borough' AS table_name, COUNT(*) AS rows FROM agg_speed_by_borough UNION ALL
+SELECT 'agg_passenger_dist'   AS table_name, COUNT(*) AS rows FROM agg_passenger_dist   UNION ALL
+SELECT 'agg_airport_trips'    AS table_name, COUNT(*) AS rows FROM agg_airport_trips    UNION ALL
+SELECT 'agg_suspicious_flags' AS table_name, COUNT(*) AS rows FROM agg_suspicious_flags
+ORDER BY table_name;
