@@ -1,0 +1,8 @@
+day_of_week,day_name,total_trips,avg_fare,avg_total,avg_tip
+0,Sunday,4380756,20.62,29.7,3.71
+1,Monday,4528973,20.6,30.27,3.78
+2,Tuesday,5182879,19.52,28.9,3.66
+3,Wednesday,5351356,19.52,28.95,3.71
+4,Thursday,5564868,19.89,29.43,3.76
+5,Friday,5263105,19.44,28.84,3.62
+6,Saturday,5215320,18.62,26.93,3.36

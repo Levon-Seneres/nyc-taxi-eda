@@ -1,0 +1,7 @@
+RatecodeID,rate_label,total_trips,avg_fare,avg_distance_mi,avg_duration_min,avg_total
+1.0,Standard Rate,33409124,16.82,2.68,14.92,25.46
+2.0,JFK Flat Rate,1307009,70.0,18.1,52.36,93.57
+5.0,Negotiated Fare,128822,80.65,11.8,33.3,98.86
+3.0,Newark,112875,89.14,16.93,40.61,121.42
+4.0,Nassau/Westchester,95207,112.94,20.57,42.67,136.59
+6.0,Group Ride,13,3.88,1.99,11.95,11.86

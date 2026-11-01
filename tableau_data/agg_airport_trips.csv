@@ -1,0 +1,5 @@
+trip_type,airport,total_trips,avg_fare,avg_tip,avg_distance_mi,avg_duration_min,avg_total,total_revenue
+Non-Airport Trip,Non-Airport,31623766,15.11,2.91,2.2,14.19,22.84,722233051.64
+Airport Trip,JFK,2164195,65.21,9.78,16.28,45.4,84.23,182300842.77
+Airport Trip,LaGuardia,1605622,44.61,9.4,9.86,31.5,69.27,111222206.46
+Airport Trip,Newark,93674,94.65,15.69,17.7,41.58,129.77,12156123.76

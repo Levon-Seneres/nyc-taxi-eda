@@ -1,0 +1,21 @@
+pu_borough,pu_zone,total_trips,avg_fare,avg_total,avg_tip,total_revenue
+Queens,JFK Airport,1834463,64.41,83.01,9.48,152273171.57
+Manhattan,Upper East Side South,1762823,13.05,20.65,2.75,36407470.59
+Manhattan,Midtown Center,1733541,16.63,25.34,3.34,43930262.93
+Manhattan,Upper East Side North,1553567,13.37,20.98,2.81,32586075.35
+Manhattan,Midtown East,1306966,16.11,24.62,3.27,32175429.79
+Manhattan,Penn Station/Madison Sq West,1266657,17.37,25.6,3.3,32424484.72
+Manhattan,Times Sq/Theatre District,1246627,19.71,29.13,3.64,36320075.21
+Queens,LaGuardia Airport,1240759,44.14,68.56,9.14,85066970.42
+Manhattan,Lincoln Square East,1180086,14.32,22.24,2.98,26241869.91
+Manhattan,Midtown North,1060526,16.71,25.32,3.31,26852455.31
+Manhattan,Murray Hill,1044297,16.03,24.4,3.17,25484663.69
+Manhattan,Upper West Side South,992053,14.02,21.87,2.98,21695085.06
+Manhattan,East Chelsea,979265,17.63,26.2,3.43,25657192.19
+Manhattan,Union Sq,969119,14.72,22.86,3.06,22154165.06
+Manhattan,Clinton East,915448,15.96,24.11,3.02,22075888.65
+Manhattan,Lenox Hill West,826649,13.25,20.76,2.69,17162929.14
+Manhattan,Midtown South,817814,16.42,25.01,3.2,20452012.87
+Manhattan,West Village,803076,15.01,23.09,3.13,18545592.98
+Manhattan,East Village,773796,15.04,23.03,3.02,17819785.23
+Manhattan,Gramercy,709694,14.59,22.52,2.94,15980172.1

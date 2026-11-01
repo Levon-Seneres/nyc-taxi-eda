@@ -1,0 +1,5 @@
+payment_type,payment_label,total_trips,pct_of_trips,avg_fare,avg_tip,avg_total,total_revenue
+1,Credit Card,29806260,83.99,19.69,4.35,29.69,885088973.04
+2,Cash,5175569,14.58,19.59,0.0,24.92,128977962.7
+4,Dispute,366371,1.03,22.39,0.01,28.1,10296340.63
+3,No Charge,139057,0.39,20.13,0.01,25.52,3548948.26
