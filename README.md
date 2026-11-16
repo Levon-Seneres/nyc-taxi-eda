@@ -80,7 +80,7 @@ Cash accounts for only 14.6% of transactions. Credit card dominates at 84%.
 ### Tip rates vary sharply by borough. Brooklyn and Bronx riders tip far less
 On card payments, Manhattan averages 25.6% tip. Queens 21.8%, Brooklyn 7.6%, Bronx 1.4%.
 
-> **What this means:** The low tip rates in Brooklyn and Bronx likely reflect a combination of lower average incomes and stronger cash payment habits in those areas. Cash tips are not captured in this dataset, so the true tip rate may be higher. However, if the disparity is real, driver incentive structures should account for this, drivers dispatched to outer boroughs are likely earning less per trip in both fare and tip. Platforms could use tip rate data to design better driver compensation that does not penalize drivers for serving lower-income areas.
+> **What this means:** The low tip rates in Brooklyn and Bronx likely reflects a combination of lower average incomes and stronger cash payment habits in those areas. Cash tips are not captured in this dataset, so the true tip rate may be higher. However, if the disparity is real, driver incentive structures should account for this, drivers dispatched to outer boroughs are likely earning less per trip in both fare and tip. Platforms could use tip rate data to design better driver compensation that does not penalize drivers for serving lower-income areas.
 
 ---
 
