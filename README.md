@@ -45,21 +45,21 @@ Explores how trips are paid, what drives fare costs, and how tips vary by boroug
 ### Demand is concentrated in Manhattan and peaks at 6pm
 89% of all 35.5M trips originate in Manhattan. Demand builds steadily from 6am, peaks sharply at 6pm on weekdays, then drops off. On weekends, demand shifts later into the night.
 
-> **What this means:** Yellow taxi supply and driver scheduling should be heavily weighted toward Manhattan during evening hours. Fleet operators and dispatch platforms should prioritise Manhattan coverage from 4–8pm on weekdays. Outer boroughs are underserved — there is a gap that app-based ride-hailing (Uber, Lyft) has filled that yellow taxis have not.
+> **What this means:** Yellow taxi supply and driver scheduling should be heavily weighted toward Manhattan during evening hours. Fleet operators and dispatch platforms should prioritise Manhattan coverage from 4–8pm on weekdays. Outer boroughs are underserved and there is a gap that app-based ride-hailing (Uber, Lyft) has filled that yellow taxis have not.
 
 ---
 
 ### August is the slowest month, October the busiest
-August recorded 2.59M trips — the lowest of the year. October peaked at 3.29M. The pattern dips in winter (Jan–Feb), recovers in spring, dips again in summer, then peaks in autumn.
+August recorded 2.59M trips which is the lowest of the year. October peaked at 3.29M. The pattern dips in winter (Jan–Feb), recovers in spring, dips again in summer, then peaks in autumn.
 
 > **What this means:** Taxi companies and drivers can use this seasonal pattern to plan maintenance windows in August when demand is lowest, and maximise availability in October. Pricing models could apply mild surge pricing during peak months to capture higher willingness to pay.
 
 ---
 
 ### JFK Airport is the single busiest pickup zone in the dataset
-JFK recorded 1.83M trips — more than any Manhattan neighbourhood zone. LaGuardia added 1.24M. Together the two airports account for over 3M trips.
+JFK recorded 1.83M trips which is more than any Manhattan neighborhood zone. LaGuardia added 1.24M trips. Together the two airports account for over 3M trips.
 
-> **What this means:** Airport routes are a critical revenue segment. Taxi operators should ensure consistent airport coverage and fast pickup availability at JFK and LaGuardia. The JFK flat-rate fare ($65.21 average) provides predictability for both drivers and passengers — this model could be extended to LaGuardia to reduce fare uncertainty and increase rider confidence.
+> **What this means:** Airport routes are a critical revenue segment. Taxi operators should ensure consistent airport coverage and fast pickup availability at JFK and LaGuardia. The JFK flat-rate fare ($65.21 average) provides predictability for both drivers and passengers. This model could be extended to LaGuardia to reduce fare uncertainty and increase rider confidence.
 
 ---
 
@@ -70,24 +70,24 @@ Newark averages $94.65 per trip versus $15.11 for a non-airport trip. JFK averag
 
 ---
 
-### 84% of trips are paid by card — cash is nearly gone
+### 84% of trips are paid by card, cash is nearly gone
 Cash accounts for only 14.6% of transactions. Credit card dominates at 84%.
 
 > **What this means:** Investment in cash handling infrastructure (change, cash registers, cash reconciliation) is no longer justified. Resources should shift toward card terminal reliability, contactless payment, and in-app payment integration. Any friction in card payment directly impacts the majority of transactions.
 
 ---
 
-### Tip rates vary sharply by borough — Brooklyn and Bronx riders tip far less
+### Tip rates vary sharply by borough. Brooklyn and Bronx riders tip far less
 On card payments, Manhattan averages 25.6% tip. Queens 21.8%, Brooklyn 7.6%, Bronx 1.4%.
 
-> **What this means:** The low tip rates in Brooklyn and Bronx likely reflect a combination of lower average incomes and stronger cash payment habits in those areas — cash tips are not captured in this dataset, so the true tip rate may be higher. However, if the disparity is real, driver incentive structures should account for this — drivers dispatched to outer boroughs are likely earning less per trip in both fare and tip. Platforms could use tip rate data to design fairer driver compensation that does not penalise drivers for serving lower-income areas.
+> **What this means:** The low tip rates in Brooklyn and Bronx likely reflect a combination of lower average incomes and stronger cash payment habits in those areas. Cash tips are not captured in this dataset, so the true tip rate may be higher. However, if the disparity is real, driver incentive structures should account for this, drivers dispatched to outer boroughs are likely earning less per trip in both fare and tip. Platforms could use tip rate data to design better driver compensation that does not penalize drivers for serving lower-income areas.
 
 ---
 
 ### Manhattan is the slowest borough despite the highest demand
 Manhattan averages ~10 mph. Staten Island averages ~32 mph with almost no taxi activity.
 
-> **What this means:** Congestion directly erodes driver earnings — a slower trip means fewer trips per hour and lower hourly income. This supports the case for congestion-based pricing (which NYC has since introduced with the congestion pricing zone). For fleet operators, trip efficiency metrics (revenue per hour, not just revenue per trip) should be tracked to give a true picture of driver profitability in dense vs outer borough routes.
+> **What this means:** Congestion directly erodes driver earnings since a slower trip means fewer trips per hour and lower hourly income. This supports the case for congestion-based pricing (which NYC has since introduced with the congestion pricing zone). For fleet operators, trip efficiency metrics (revenue per hour, not just revenue per trip) should be tracked to give a good picture of driver profitability in dense vs outer borough routes.
 
 ---
 
